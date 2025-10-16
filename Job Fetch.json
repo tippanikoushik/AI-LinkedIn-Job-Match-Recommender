@@ -1,0 +1,215 @@
+{
+  "name": "Job Fetch",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [-500, -700],
+      "id": "78395105-c0d5-4510-a576-a73cf5cc3e28",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "APIFY Token",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-100, -700],
+      "id": "c1df776a-a77b-4cd3-a5aa-0dccab0375d1",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Use the data for reference ... (job description analysis instructions)",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=... (system message instructions)"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [480, -700],
+      "id": "b948d256-6de3-48a4-ba7f-53ef2bb259f7",
+      "name": "AI Agent",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{...}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [720, -260],
+      "id": "d6e3561c-ee3e-46a6-8be2-02eb7e4c2750",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_DRIVE_FILE_ID",
+          "mode": "list"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [240, -1200],
+      "id": "8468b26e-48bb-4a08-afd1-d8b71ae5d8fb",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "GOOGLE_DRIVE_TOKEN",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [1760, -620],
+      "id": "c2f13b40-d52b-4a86-9320-1cadd41fbeeb",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "GPT Token",
+          "name": "GPT Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [360, -260],
+      "id": "4aee3890-4a21-4120-aa4f-13d43e4a6c33",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "GPT Token",
+          "name": "GPT Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{...}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [2460, -680],
+      "id": "e493ef92-a59f-4ad1-89db-422c64b88bcf",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": { "...": "..." }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [2640, -980],
+      "id": "9a3d61a6-3e1a-4efb-85a9-5274c02ff09d",
+      "name": "Update row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_TOKEN",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Based on the following job data, edit the Data Analyst resume..."
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [1900, -980],
+      "id": "d7725be5-30a1-4aa2-85de-0c6f7d260de2",
+      "name": "AI Agent1",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [480, -1200],
+      "id": "05532a08-0877-4e5d-a983-28ab9fe4ee4b",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [320, -940],
+      "id": "59c0ad3f-51ae-4305-a4ba-20b8a552de38",
+      "name": "Embeddings OpenAI2",
+      "credentials": {
+        "openAiApi": {
+          "id": "GPT Token",
+          "name": "GPT Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "loader": "docxLoader",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [660, -940],
+      "id": "35aab621-bd3f-4fc0-b2d8-d3775c7e62d0",
+      "name": "Default Data Loader1"
+    }
+  ],
+  "connections": { "...": "..." },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "b437f815-6640-4351-9fde-55bcc49864bd"
+}
