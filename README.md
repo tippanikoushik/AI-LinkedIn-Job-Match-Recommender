@@ -1,7 +1,7 @@
  AI LinkedIn Job Match Recommender (n8n No-Code Workflow)
 
 A no-code **AI workflow built using n8n** that fetches job listings from LinkedIn (via Apify API), analyzes them using **OpenAI GPT models**, and automatically matches them to a candidate’s resume stored in Google Drive.  
-The results including job details, required experience, keywords, and ATS-optimized resume suggestions — are stored in **Google Sheets** for easy tracking.
+The results including job details, required experience, keywords, and ATS-optimized resume suggestions are stored in **Google Sheets** for easy tracking.
 
 ---
 
