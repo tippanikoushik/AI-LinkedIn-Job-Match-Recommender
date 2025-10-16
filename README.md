@@ -1,2 +1,3 @@
-# AI-LinkedIn-Job-Match-Recommender
-Automated n8n workflow that matches LinkedIn jobs to a resume using OpenAI embeddings
+# AI LinkedIn Job Match Recommender (n8n)
+
+A no-code n8n workflow that fetches LinkedIn jobs (Apify), analyzes them with OpenAI, matches jobs to a resume, and logs results to Google Sheets.
